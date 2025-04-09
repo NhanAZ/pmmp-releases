@@ -36,7 +36,7 @@ async function fetchAllReleases() {
   const owner = 'pmmp';
   const repo = 'PocketMine-MP';
   const perPage = 100;
-  const maxPages = 5; // Fetch up to 500 releases
+  const maxPages = 10; // Fetch up to 1000 releases instead of 500
   
   let allReleases = [];
   let page = 1;
@@ -74,6 +74,9 @@ async function fetchAllReleases() {
   }
   
   console.log(`Total releases fetched: ${allReleases.length}`);
+  if (allReleases.length > 0) {
+    console.log(`First release: ${allReleases[0]?.tag_name}, Last release: ${allReleases[allReleases.length-1]?.tag_name}`);
+  }
   
   return allReleases;
 }
@@ -105,10 +108,10 @@ async function processAndSaveReleases() {
         html_url: release.html_url,
         id: release.id,
         tag_name: release.tag_name,
-        name: release.name,
-        body: release.body,
+        name: release.name || release.tag_name,
+        body: release.body || '',
         created_at: release.created_at,
-        assets: release.assets.map(asset => ({
+        assets: (release.assets || []).map(asset => ({
           name: asset.name,
           browser_download_url: asset.browser_download_url
         })),
@@ -116,6 +119,15 @@ async function processAndSaveReleases() {
         releaseType: releaseType
       };
     });
+    
+    // Log some release info for debugging
+    if (processedReleases.length > 0) {
+      console.log('Sample of releases that will be saved:');
+      for (let i = 0; i < Math.min(5, processedReleases.length); i++) {
+        console.log(`- ${processedReleases[i].tag_name} (${processedReleases[i].releaseType}, MC ${processedReleases[i].mcVersion || 'unknown'})`);
+      }
+      console.log(`...and ${processedReleases.length - 5} more.`);
+    }
     
     // Create directory if it doesn't exist
     const dataDir = path.join(__dirname, '..', 'data');

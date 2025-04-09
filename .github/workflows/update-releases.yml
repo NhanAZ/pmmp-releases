@@ -15,16 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Fetch All PocketMine-MP Releases
-        id: fetch-releases
+      - name: Fetch and Process PocketMine-MP Releases
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const fs = require('fs');
+            const path = require('path');
+            
             const owner = 'pmmp';
             const repo = 'PocketMine-MP';
             const perPage = 100;
-            const maxPages = 10; // Up to 1000 releases (reduced this to 3 if you want to test with fewer API calls)
+            const maxPages = 10; // Up to 1000 releases
             
             let allReleases = [];
             let page = 1;
@@ -32,6 +34,7 @@ jobs:
             
             console.log('Starting to fetch PocketMine-MP releases...');
             
+            // Fetch all releases
             while (hasMoreReleases && page <= maxPages) {
               console.log(`Fetching page ${page}...`);
               try {
@@ -69,21 +72,14 @@ jobs:
             console.log(`Total releases fetched: ${allReleases.length}`);
             console.log(`First release: ${allReleases[0]?.tag_name}, Last release: ${allReleases[allReleases.length-1]?.tag_name}`);
             
-            return allReleases;
-          result-encoding: json
-      
-      - name: Process Releases
-        id: process-releases
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-            
-            // Get releases from previous step
-            const allReleases = ${{ steps.fetch-releases.outputs.result }};
-            
+            // Process releases immediately instead of passing to another step
             console.log(`Processing ${allReleases.length} releases...`);
+            
+            // Create directory if it doesn't exist
+            const dataDir = path.join(process.env.GITHUB_WORKSPACE, 'data');
+            if (!fs.existsSync(dataDir)) {
+              fs.mkdirSync(dataDir, { recursive: true });
+            }
             
             // Process releases to add additional properties
             const processedReleases = allReleases.map(release => {
@@ -92,7 +88,6 @@ jobs:
               let mcVersion = null;
               if (mcVersionMatch && mcVersionMatch[1]) {
                 mcVersion = mcVersionMatch[1];
-                console.log(`Found Minecraft version ${mcVersion} for release ${release.tag_name}`);
               }
               
               // Determine release type based on tag
@@ -109,10 +104,10 @@ jobs:
                 html_url: release.html_url,
                 id: release.id,
                 tag_name: release.tag_name,
-                name: release.name,
-                body: release.body,
+                name: release.name || release.tag_name,
+                body: release.body || '',
                 created_at: release.created_at,
-                assets: release.assets.map(asset => ({
+                assets: (release.assets || []).map(asset => ({
                   name: asset.name,
                   browser_download_url: asset.browser_download_url
                 })),
@@ -121,31 +116,20 @@ jobs:
               };
             });
             
-            // Use all releases instead of limiting to just 10
-            // This will keep all the releases that were fetched
-            const releasesToSave = processedReleases;
-            console.log(`Will save ${releasesToSave.length} releases to file`);
-            
             // Log some release info for debugging
-            if (releasesToSave.length > 0) {
+            if (processedReleases.length > 0) {
               console.log('Sample of releases that will be saved:');
-              for (let i = 0; i < Math.min(5, releasesToSave.length); i++) {
-                console.log(`- ${releasesToSave[i].tag_name} (${releasesToSave[i].releaseType}, MC ${releasesToSave[i].mcVersion || 'unknown'})`);
+              for (let i = 0; i < Math.min(5, processedReleases.length); i++) {
+                console.log(`- ${processedReleases[i].tag_name} (${processedReleases[i].releaseType}, MC ${processedReleases[i].mcVersion || 'unknown'})`);
               }
-              console.log(`...and ${releasesToSave.length - 5} more.`);
-            }
-            
-            // Create directory if it doesn't exist
-            const dataDir = path.join(process.env.GITHUB_WORKSPACE, 'data');
-            if (!fs.existsSync(dataDir)) {
-              fs.mkdirSync(dataDir, { recursive: true });
+              console.log(`...and ${processedReleases.length - 5} more.`);
             }
             
             // Save to file
             const outputFile = path.join(dataDir, 'releases.json');
-            fs.writeFileSync(outputFile, JSON.stringify(releasesToSave, null, 2));
+            fs.writeFileSync(outputFile, JSON.stringify(processedReleases, null, 2));
             
-            console.log(`Releases data saved to ${outputFile} - contains ${releasesToSave.length} releases`);
+            console.log(`Releases data saved to ${outputFile} - contains ${processedReleases.length} releases`);
             
             // Create summary with stats
             const mcVersions = new Set();
