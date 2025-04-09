@@ -2,7 +2,7 @@
 let allReleases = [];
 let filteredReleases = [];
 let currentPage = 1;
-const releasesPerPage = 9;
+let releasesPerPage = 20;
 let mcVersions = new Set();
 let viewMode = 'grid';
 
@@ -12,6 +12,7 @@ const mcVersionSelect = document.getElementById('mcVersion');
 const releaseTypeSelect = document.getElementById('releaseType');
 const resetFiltersBtn = document.getElementById('resetFilters');
 const sortOrderSelect = document.getElementById('sortOrder');
+const itemsPerPageSelect = document.getElementById('itemsPerPage');
 const viewGridBtn = document.getElementById('viewGrid');
 const viewListBtn = document.getElementById('viewList');
 const releasesContainer = document.getElementById('releases');
@@ -29,6 +30,10 @@ document.addEventListener('DOMContentLoaded', initialize);
 async function initialize() {
     try {
         await fetchReleases();
+        
+        // Set initial values for controls
+        itemsPerPageSelect.value = releasesPerPage.toString();
+        
         setupEventListeners();
         extractMcVersions();
         populateMcVersionsDropdown();
@@ -140,6 +145,13 @@ function setupEventListeners() {
     resetFiltersBtn.addEventListener('click', resetFilters);
     sortOrderSelect.addEventListener('change', () => {
         sortReleases();
+        displayReleases();
+    });
+    
+    // Items per page event
+    itemsPerPageSelect.addEventListener('change', () => {
+        releasesPerPage = parseInt(itemsPerPageSelect.value);
+        currentPage = 1; // Reset to first page when changing items per page
         displayReleases();
     });
     

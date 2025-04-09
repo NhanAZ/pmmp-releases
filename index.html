@@ -90,11 +90,21 @@
                             <div>
                                 <span id="showingResults">Showing 0 of 0 releases</span>
                             </div>
-                            <div>
-                                <select class="form-select form-select-sm" id="sortOrder">
-                                    <option value="newest">Newest First</option>
-                                    <option value="oldest">Oldest First</option>
-                                </select>
+                            <div class="d-flex">
+                                <div class="me-2">
+                                    <select class="form-select form-select-sm" id="itemsPerPage">
+                                        <option value="20">20 per page</option>
+                                        <option value="50">50 per page</option>
+                                        <option value="100">100 per page</option>
+                                        <option value="200">200 per page</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <select class="form-select form-select-sm" id="sortOrder">
+                                        <option value="newest">Newest First</option>
+                                        <option value="oldest">Oldest First</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         
