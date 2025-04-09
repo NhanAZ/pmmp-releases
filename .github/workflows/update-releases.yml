@@ -15,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Fetch and Process PocketMine-MP Releases
+      - name: Fetch and Process All PocketMine-MP Releases
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -23,54 +23,77 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             
-            const owner = 'pmmp';
-            const repo = 'PocketMine-MP';
+            // Configuration
+            const repositories = [
+              { owner: 'pmmp', repo: 'PocketMine-MP' },   // Current repository
+              { owner: 'PocketMine', repo: 'PocketMine-MP' }  // Old archived repository
+            ];
             const perPage = 100;
-            const maxPages = 10; // Up to 1000 releases
+            const maxPages = 10; // Up to 1000 releases per repository
             
             let allReleases = [];
-            let page = 1;
-            let hasMoreReleases = true;
             
-            console.log('Starting to fetch PocketMine-MP releases...');
+            console.log('Starting to fetch PocketMine-MP releases from all repositories...');
             
-            // Fetch all releases
-            while (hasMoreReleases && page <= maxPages) {
-              console.log(`Fetching page ${page}...`);
-              try {
-                const response = await github.rest.repos.listReleases({
-                  owner,
-                  repo,
-                  per_page: perPage,
-                  page: page
-                });
-                
-                const releases = response.data;
-                console.log(`Fetched ${releases.length} releases from page ${page}`);
-                
-                if (releases.length === 0) {
-                  hasMoreReleases = false;
-                } else {
-                  allReleases = allReleases.concat(releases);
-                  if (releases.length < perPage) {
+            // Fetch releases from all repositories
+            for (const repoConfig of repositories) {
+              console.log(`Fetching releases from ${repoConfig.owner}/${repoConfig.repo}...`);
+              
+              let repoReleases = [];
+              let page = 1;
+              let hasMoreReleases = true;
+              
+              // Fetch all releases from this repository
+              while (hasMoreReleases && page <= maxPages) {
+                console.log(`Fetching page ${page} from ${repoConfig.owner}/${repoConfig.repo}...`);
+                try {
+                  const response = await github.rest.repos.listReleases({
+                    owner: repoConfig.owner,
+                    repo: repoConfig.repo,
+                    per_page: perPage,
+                    page: page
+                  });
+                  
+                  const releases = response.data;
+                  console.log(`Fetched ${releases.length} releases from ${repoConfig.owner}/${repoConfig.repo} page ${page}`);
+                  
+                  if (releases.length === 0) {
                     hasMoreReleases = false;
+                  } else {
+                    // Add repository info to each release
+                    const processedReleases = releases.map(release => ({
+                      ...release,
+                      source_repo: `${repoConfig.owner}/${repoConfig.repo}`,
+                      is_archived: repoConfig.owner === 'PocketMine' // Mark old repo releases
+                    }));
+                    
+                    repoReleases = repoReleases.concat(processedReleases);
+                    
+                    if (releases.length < perPage) {
+                      hasMoreReleases = false;
+                    }
                   }
+                  
+                  page++;
+                  
+                  // Add a small delay to avoid hitting rate limits
+                  if (hasMoreReleases) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                  }
+                } catch (error) {
+                  console.error(`Error fetching page ${page} from ${repoConfig.owner}/${repoConfig.repo}:`, error);
+                  hasMoreReleases = false;
                 }
-                
-                page++;
-                
-                // Add a small delay to avoid hitting rate limits
-                if (hasMoreReleases) {
-                  await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-              } catch (error) {
-                console.error(`Error fetching page ${page}:`, error);
-                hasMoreReleases = false;
               }
+              
+              console.log(`Total releases fetched from ${repoConfig.owner}/${repoConfig.repo}: ${repoReleases.length}`);
+              allReleases = allReleases.concat(repoReleases);
             }
             
-            console.log(`Total releases fetched: ${allReleases.length}`);
-            console.log(`First release: ${allReleases[0]?.tag_name}, Last release: ${allReleases[allReleases.length-1]?.tag_name}`);
+            console.log(`Combined total releases fetched: ${allReleases.length}`);
+            if (allReleases.length > 0) {
+              console.log(`First release: ${allReleases[0]?.tag_name}, Last release: ${allReleases[allReleases.length-1]?.tag_name}`);
+            }
             
             // Process releases immediately instead of passing to another step
             console.log(`Processing ${allReleases.length} releases...`);
@@ -84,17 +107,26 @@ jobs:
             // Process releases to add additional properties
             const processedReleases = allReleases.map(release => {
               // Extract Minecraft version from the release body
-              const mcVersionMatch = release.body && release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i);
               let mcVersion = null;
-              if (mcVersionMatch && mcVersionMatch[1]) {
-                mcVersion = mcVersionMatch[1];
+              
+              if (release.body) {
+                // Try to match both PE and Bedrock Edition formats
+                const bedrockMatch = release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i);
+                const peMatch = release.body.match(/For Minecraft: PE v?(\d+\.\d+\.\d+)/i) || 
+                                release.body.match(/For Minecraft: PE(?: alpha)? v?(\d+\.\d+\.\d+)/i);
+                
+                if (bedrockMatch && bedrockMatch[1]) {
+                  mcVersion = bedrockMatch[1];
+                } else if (peMatch && peMatch[1]) {
+                  mcVersion = peMatch[1];
+                }
               }
               
               // Determine release type based on tag
               let releaseType = 'stable';
-              if (release.tag_name.includes('alpha')) {
+              if (release.tag_name && (release.tag_name.toLowerCase().includes('alpha') || release.tag_name.toLowerCase().includes('dev'))) {
                 releaseType = 'alpha';
-              } else if (release.tag_name.includes('beta')) {
+              } else if (release.tag_name && release.tag_name.toLowerCase().includes('beta')) {
                 releaseType = 'beta';
               }
               
@@ -112,15 +144,22 @@ jobs:
                   browser_download_url: asset.browser_download_url
                 })),
                 mcVersion: mcVersion,
-                releaseType: releaseType
+                releaseType: releaseType,
+                source_repo: release.source_repo,
+                is_archived: release.is_archived
               };
+            });
+            
+            // Sort all releases by date (newest first)
+            processedReleases.sort((a, b) => {
+              return new Date(b.created_at) - new Date(a.created_at);
             });
             
             // Log some release info for debugging
             if (processedReleases.length > 0) {
               console.log('Sample of releases that will be saved:');
               for (let i = 0; i < Math.min(5, processedReleases.length); i++) {
-                console.log(`- ${processedReleases[i].tag_name} (${processedReleases[i].releaseType}, MC ${processedReleases[i].mcVersion || 'unknown'})`);
+                console.log(`- ${processedReleases[i].tag_name} (${processedReleases[i].releaseType}, MC ${processedReleases[i].mcVersion || 'unknown'}, Repo: ${processedReleases[i].source_repo})`);
               }
               console.log(`...and ${processedReleases.length - 5} more.`);
             }
@@ -139,6 +178,11 @@ jobs:
               }
             });
             
+            // Count by repository
+            const pmmpReleases = processedReleases.filter(r => r.source_repo === 'pmmp/PocketMine-MP').length;
+            const oldReleases = processedReleases.filter(r => r.source_repo === 'PocketMine/PocketMine-MP').length;
+            
+            // Count by type
             const stableReleases = processedReleases.filter(r => r.releaseType === 'stable').length;
             const betaReleases = processedReleases.filter(r => r.releaseType === 'beta').length;
             const alphaReleases = processedReleases.filter(r => r.releaseType === 'alpha').length;
@@ -147,6 +191,10 @@ jobs:
             # PocketMine-MP Releases Summary
             
             **Total Releases:** ${processedReleases.length}
+            
+            ## Sources
+            - Current Repository (pmmp/PocketMine-MP): ${pmmpReleases}
+            - Archived Repository (PocketMine/PocketMine-MP): ${oldReleases}
             
             ## Release Types
             - Stable: ${stableReleases}

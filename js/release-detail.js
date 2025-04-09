@@ -21,7 +21,8 @@ function createModal() {
                         <div>
                             <span class="badge rounded-pill bg-version me-2">v0.0.0</span>
                             <span class="badge rounded-pill bg-mc-version me-2">MC 0.0.0</span>
-                            <span class="badge rounded-pill bg-type">type</span>
+                            <span class="badge rounded-pill bg-type me-2">type</span>
+                            <span class="badge rounded-pill bg-repo">source</span>
                         </div>
                         <small class="text-muted release-date">Released on: Date</small>
                     </div>
@@ -62,6 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+    
+    // Handle direct hash links to releases
+    if (window.location.hash && window.location.hash.startsWith('#release-')) {
+        const releaseTag = window.location.hash.replace('#release-', '');
+        if (releaseTag) {
+            // Give the page time to load releases before showing the modal
+            setTimeout(() => {
+                showReleaseDetail(releaseTag);
+            }, 1000);
+        }
+    }
 });
 
 // Show release detail in modal
@@ -73,11 +85,17 @@ function showReleaseDetail(tagName) {
         return;
     }
     
+    // Update URL hash without triggering a page jump
+    const currentY = window.scrollY;
+    window.location.hash = `release-${tagName}`;
+    window.scrollTo(window.scrollX, currentY);
+    
     // Get elements
     const modalTitle = document.getElementById('releaseDetailModalLabel');
     const versionBadge = document.querySelector('#releaseDetailModal .bg-version');
     const mcVersionBadge = document.querySelector('#releaseDetailModal .bg-mc-version');
     const typeBadge = document.querySelector('#releaseDetailModal .bg-type');
+    const repoBadge = document.querySelector('#releaseDetailModal .bg-repo');
     const releaseDate = document.querySelector('#releaseDetailModal .release-date');
     const releaseContent = document.querySelector('#releaseDetailModal .release-content');
     const downloadBtn = document.querySelector('#releaseDetailModal .download-btn');
@@ -86,17 +104,42 @@ function showReleaseDetail(tagName) {
     // Set modal title
     modalTitle.textContent = release.name;
     
+    // Add archived badge to title if archived
+    if (release.is_archived) {
+        modalTitle.innerHTML = `${release.name} <span class="badge bg-warning text-dark">Archived</span>`;
+    }
+    
     // Set badges
     versionBadge.textContent = release.tag_name;
     
-    // Get MC version
-    const mcVersionMatch = release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i);
-    const mcVersion = mcVersionMatch ? mcVersionMatch[1] : 'Unknown';
+    // Get MC version - try both formats (PE and Bedrock)
+    let mcVersion = release.mcVersion;
+    if (!mcVersion) {
+        const bedrockMatch = release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i);
+        const peMatch = release.body.match(/For Minecraft: PE v?(\d+\.\d+\.\d+)/i) || 
+                        release.body.match(/For Minecraft: PE(?: alpha)? v?(\d+\.\d+\.\d+)/i);
+        
+        if (bedrockMatch && bedrockMatch[1]) {
+            mcVersion = bedrockMatch[1];
+        } else if (peMatch && peMatch[1]) {
+            mcVersion = peMatch[1];
+        } else {
+            mcVersion = 'Unknown';
+        }
+    }
+    
     mcVersionBadge.textContent = `MC ${mcVersion}`;
     
     // Set release type badge
     typeBadge.textContent = release.releaseType.charAt(0).toUpperCase() + release.releaseType.slice(1);
-    typeBadge.className = `badge rounded-pill bg-type-${release.releaseType} bg-type`;
+    typeBadge.className = `badge rounded-pill bg-type-${release.releaseType} bg-type me-2`;
+    
+    // Set source repository badge
+    if (repoBadge && release.source_repo) {
+        const repoName = release.source_repo.split('/')[1];
+        repoBadge.textContent = release.is_archived ? `${repoName} (Archived)` : repoName;
+        repoBadge.className = `badge rounded-pill bg-repo ${release.is_archived ? 'bg-warning' : 'bg-info'}`;
+    }
     
     // Set date
     const formattedDate = new Date(release.created_at).toLocaleDateString(undefined, {
@@ -125,6 +168,18 @@ function showReleaseDetail(tagName) {
         downloadBtn.style.display = 'inline-block';
     } else {
         downloadBtn.style.display = 'none';
+    }
+    
+    // Add archived repo note if from archived repository
+    if (release.is_archived) {
+        const archivedNote = document.createElement('div');
+        archivedNote.className = 'alert alert-warning mt-3';
+        archivedNote.innerHTML = `
+            <i class="fas fa-archive me-2"></i>
+            <strong>Note:</strong> This release is from the archived PocketMine/PocketMine-MP repository.
+            The repository has been archived and is no longer maintained.
+        `;
+        releaseContent.prepend(archivedNote);
     }
     
     // Show modal

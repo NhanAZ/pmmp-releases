@@ -10,6 +10,7 @@ let viewMode = 'grid';
 const searchInput = document.getElementById('search');
 const mcVersionSelect = document.getElementById('mcVersion');
 const releaseTypeSelect = document.getElementById('releaseType');
+const sourceRepoSelect = document.getElementById('sourceRepo');
 const resetFiltersBtn = document.getElementById('resetFilters');
 const sortOrderSelect = document.getElementById('sortOrder');
 const itemsPerPageSelect = document.getElementById('itemsPerPage');
@@ -142,6 +143,9 @@ function setupEventListeners() {
     searchInput.addEventListener('input', debounce(filterReleases, 300));
     mcVersionSelect.addEventListener('change', filterReleases);
     releaseTypeSelect.addEventListener('change', filterReleases);
+    if (sourceRepoSelect) {
+        sourceRepoSelect.addEventListener('change', filterReleases);
+    }
     resetFiltersBtn.addEventListener('click', resetFilters);
     sortOrderSelect.addEventListener('change', () => {
         sortReleases();
@@ -165,15 +169,19 @@ function resetFilters() {
     searchInput.value = '';
     mcVersionSelect.value = '';
     releaseTypeSelect.value = '';
+    if (sourceRepoSelect) {
+        sourceRepoSelect.value = '';
+    }
     sortOrderSelect.value = 'newest';
     filterReleases();
 }
 
-// Filter releases based on search, MC version, and release type
+// Filter releases based on search, MC version, release type, and source repo
 function filterReleases() {
     const searchTerm = searchInput.value.toLowerCase();
     const selectedMcVersion = mcVersionSelect.value;
     const selectedReleaseType = releaseTypeSelect.value;
+    const selectedSourceRepo = sourceRepoSelect ? sourceRepoSelect.value : '';
     
     filteredReleases = allReleases.filter(release => {
         // Text search (title, body, tag)
@@ -189,8 +197,12 @@ function filterReleases() {
         // Release type filter
         const matchesReleaseType = selectedReleaseType === '' || 
             release.releaseType === selectedReleaseType;
+            
+        // Source repo filter
+        const matchesSourceRepo = !selectedSourceRepo || selectedSourceRepo === '' || 
+            release.source_repo === selectedSourceRepo;
         
-        return matchesSearch && matchesMcVersion && matchesReleaseType;
+        return matchesSearch && matchesMcVersion && matchesReleaseType && matchesSourceRepo;
     });
     
     // Sort, reset to page 1, and display
@@ -269,10 +281,17 @@ function createReleaseCard(release) {
     const rootElement = releaseEl.querySelector('.release-item');
     rootElement.dataset.tag = release.tag_name;
     
+    // Add archived class if from archived repo
+    if (release.is_archived) {
+        rootElement.classList.add('archived-release');
+    }
+    
     // Get MC version from the release object or body
     let mcVersion = release.mcVersion;
     if (!mcVersion) {
-        const mcVersionMatch = release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i);
+        const mcVersionMatch = release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i) || 
+                                release.body.match(/For Minecraft: PE v?(\d+\.\d+\.\d+)/i) ||
+                                release.body.match(/For Minecraft: PE(?: alpha)? v?(\d+\.\d+\.\d+)/i);
         mcVersion = mcVersionMatch ? mcVersionMatch[1] : 'Unknown';
     }
     
@@ -301,6 +320,14 @@ function createReleaseCard(release) {
     const typeBadge = releaseEl.querySelector('.bg-type');
     typeBadge.textContent = release.releaseType.charAt(0).toUpperCase() + release.releaseType.slice(1);
     typeBadge.classList.add(`bg-type-${release.releaseType}`);
+    
+    // Set source repository badge if present in the template
+    const repoBadge = releaseEl.querySelector('.bg-repo');
+    if (repoBadge && release.source_repo) {
+        const repoName = release.source_repo.split('/')[1];
+        repoBadge.textContent = release.is_archived ? `${repoName} (Archived)` : repoName;
+        repoBadge.classList.add(release.is_archived ? 'bg-warning' : 'bg-info');
+    }
     
     // Set title
     releaseEl.querySelector('.release-title').textContent = release.name;
