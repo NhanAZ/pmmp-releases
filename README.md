@@ -2,8 +2,6 @@
 
 A static website to explore and search through PocketMine-MP releases from the official GitHub repositories.
 
-![PocketMine-MP Releases Explorer](https://i.imgur.com/placeholder.png)
-
 ## 🚧 DEVELOPMENT NOTICE
 
 This project is currently under development and has not been officially released. Features may be incomplete or subject to change.
