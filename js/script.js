@@ -2,7 +2,7 @@
 let allReleases = [];
 let filteredReleases = [];
 let currentPage = 1;
-let releasesPerPage = 20;
+let releasesPerPage = 10;
 let mcVersions = new Set();
 let viewMode = 'grid';
 
@@ -154,7 +154,45 @@ function setupEventListeners() {
     
     // Items per page event
     itemsPerPageSelect.addEventListener('change', () => {
-        releasesPerPage = parseInt(itemsPerPageSelect.value);
+        if (itemsPerPageSelect.value === 'custom') {
+            // Ask for custom value
+            const customValue = prompt('Enter number of releases per page (10-1000):', '50');
+            
+            if (customValue === null) {
+                // If canceled, revert to previous value
+                itemsPerPageSelect.value = releasesPerPage.toString();
+                return;
+            }
+            
+            // Parse and validate the input
+            const parsedValue = parseInt(customValue);
+            if (isNaN(parsedValue) || parsedValue < 1) {
+                alert('Please enter a valid number greater than 0.');
+                itemsPerPageSelect.value = releasesPerPage.toString();
+                return;
+            }
+            
+            // Apply the custom value
+            releasesPerPage = parsedValue;
+            
+            // Add option to select if it doesn't exist
+            let customOption = Array.from(itemsPerPageSelect.options).find(opt => opt.value === parsedValue.toString());
+            if (!customOption) {
+                customOption = document.createElement('option');
+                customOption.value = parsedValue.toString();
+                customOption.textContent = `${parsedValue} per page`;
+                // Insert before the "All" option
+                const allOption = Array.from(itemsPerPageSelect.options).find(opt => opt.value === '0');
+                itemsPerPageSelect.insertBefore(customOption, allOption);
+            }
+            
+            // Select the new custom option
+            itemsPerPageSelect.value = parsedValue.toString();
+        } else {
+            // Normal case - parse the selected value
+            releasesPerPage = parseInt(itemsPerPageSelect.value);
+        }
+        
         currentPage = 1; // Reset to first page when changing items per page
         displayReleases();
     });
@@ -235,12 +273,20 @@ function displayReleases() {
     // Clear releases container
     releasesContainer.innerHTML = '';
     
-    // Calculate start and end indices for current page
-    const startIndex = (currentPage - 1) * releasesPerPage;
-    const endIndex = Math.min(startIndex + releasesPerPage, filteredReleases.length);
+    // Get releases to display based on pagination setting
+    let currentReleases;
     
-    // Get current page releases
-    const currentReleases = filteredReleases.slice(startIndex, endIndex);
+    if (releasesPerPage === 0) {
+        // Display all releases if "All" is selected
+        currentReleases = filteredReleases;
+    } else {
+        // Calculate start and end indices for current page
+        const startIndex = (currentPage - 1) * releasesPerPage;
+        const endIndex = Math.min(startIndex + releasesPerPage, filteredReleases.length);
+        
+        // Get current page releases
+        currentReleases = filteredReleases.slice(startIndex, endIndex);
+    }
     
     // If no releases found
     if (currentReleases.length === 0) {
@@ -267,8 +313,13 @@ function displayReleases() {
         });
     }
     
-    // Update pagination
-    updatePagination();
+    // Update pagination (only if not showing all)
+    if (releasesPerPage > 0) {
+        updatePagination();
+    } else {
+        // Clear pagination when showing all
+        paginationContainer.innerHTML = '';
+    }
 }
 
 // Create a release card element
@@ -363,6 +414,11 @@ function createReleaseCard(release) {
 // Update pagination controls
 function updatePagination() {
     paginationContainer.innerHTML = '';
+    
+    // If showing all, don't show pagination
+    if (releasesPerPage === 0) {
+        return;
+    }
     
     const totalPages = Math.ceil(filteredReleases.length / releasesPerPage);
     
