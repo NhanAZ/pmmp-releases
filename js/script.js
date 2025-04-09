@@ -432,6 +432,29 @@ function updatePagination() {
     const paginationList = document.createElement('ul');
     paginationList.className = 'pagination';
     
+    // First page button
+    const firstItem = document.createElement('li');
+    firstItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
+    
+    const firstLink = document.createElement('a');
+    firstLink.className = 'page-link';
+    firstLink.href = '#';
+    firstLink.innerHTML = '&laquo;&laquo;';
+    firstLink.setAttribute('aria-label', 'First');
+    firstLink.setAttribute('title', 'First Page');
+    
+    if (currentPage > 1) {
+        firstLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = 1;
+            displayReleases();
+            window.scrollTo(0, 0);
+        });
+    }
+    
+    firstItem.appendChild(firstLink);
+    paginationList.appendChild(firstItem);
+    
     // Previous button
     const prevItem = document.createElement('li');
     prevItem.className = `page-item ${currentPage === 1 ? 'disabled' : ''}`;
@@ -463,6 +486,40 @@ function updatePagination() {
         startPage = Math.max(1, endPage - displayPages + 1);
     }
     
+    // Add first page number with ellipsis if not starting from page 1
+    if (startPage > 1) {
+        const firstPageItem = document.createElement('li');
+        firstPageItem.className = 'page-item';
+        
+        const firstPageLink = document.createElement('a');
+        firstPageLink.className = 'page-link';
+        firstPageLink.href = '#';
+        firstPageLink.textContent = '1';
+        
+        firstPageLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = 1;
+            displayReleases();
+            window.scrollTo(0, 0);
+        });
+        
+        firstPageItem.appendChild(firstPageLink);
+        paginationList.appendChild(firstPageItem);
+        
+        if (startPage > 2) {
+            const ellipsisItem = document.createElement('li');
+            ellipsisItem.className = 'page-item disabled';
+            
+            const ellipsisSpan = document.createElement('span');
+            ellipsisSpan.className = 'page-link';
+            ellipsisSpan.innerHTML = '&hellip;';
+            
+            ellipsisItem.appendChild(ellipsisSpan);
+            paginationList.appendChild(ellipsisItem);
+        }
+    }
+    
+    // Regular page numbers
     for (let i = startPage; i <= endPage; i++) {
         const pageItem = document.createElement('li');
         pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
@@ -483,6 +540,39 @@ function updatePagination() {
         
         pageItem.appendChild(pageLink);
         paginationList.appendChild(pageItem);
+    }
+    
+    // Add last page number with ellipsis if not ending at last page
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            const ellipsisItem = document.createElement('li');
+            ellipsisItem.className = 'page-item disabled';
+            
+            const ellipsisSpan = document.createElement('span');
+            ellipsisSpan.className = 'page-link';
+            ellipsisSpan.innerHTML = '&hellip;';
+            
+            ellipsisItem.appendChild(ellipsisSpan);
+            paginationList.appendChild(ellipsisItem);
+        }
+        
+        const lastPageItem = document.createElement('li');
+        lastPageItem.className = 'page-item';
+        
+        const lastPageLink = document.createElement('a');
+        lastPageLink.className = 'page-link';
+        lastPageLink.href = '#';
+        lastPageLink.textContent = totalPages;
+        
+        lastPageLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = totalPages;
+            displayReleases();
+            window.scrollTo(0, 0);
+        });
+        
+        lastPageItem.appendChild(lastPageLink);
+        paginationList.appendChild(lastPageItem);
     }
     
     // Next button
@@ -507,8 +597,71 @@ function updatePagination() {
     nextItem.appendChild(nextLink);
     paginationList.appendChild(nextItem);
     
+    // Last page button
+    const lastItem = document.createElement('li');
+    lastItem.className = `page-item ${currentPage === totalPages ? 'disabled' : ''}`;
+    
+    const lastLink = document.createElement('a');
+    lastLink.className = 'page-link';
+    lastLink.href = '#';
+    lastLink.innerHTML = '&raquo;&raquo;';
+    lastLink.setAttribute('aria-label', 'Last');
+    lastLink.setAttribute('title', 'Last Page');
+    
+    if (currentPage < totalPages) {
+        lastLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentPage = totalPages;
+            displayReleases();
+            window.scrollTo(0, 0);
+        });
+    }
+    
+    lastItem.appendChild(lastLink);
+    paginationList.appendChild(lastItem);
+    
+    // Go to page input
+    const goToPageItem = document.createElement('li');
+    goToPageItem.className = 'page-item ms-2';
+    
+    const goToPageInput = document.createElement('div');
+    goToPageInput.className = 'd-flex align-items-center';
+    goToPageInput.innerHTML = `
+        <input type="number" class="form-control form-control-sm goto-page-input" min="1" max="${totalPages}" 
+               value="${currentPage}" style="width: 60px;"> 
+        <button class="btn btn-sm btn-secondary goto-page-btn ms-1">Go</button>
+    `;
+    
+    goToPageItem.appendChild(goToPageInput);
+    paginationList.appendChild(goToPageItem);
+    
+    // Add event listener to Go button
     paginationNav.appendChild(paginationList);
     paginationContainer.appendChild(paginationNav);
+    
+    // Add event listener for the Go button
+    const gotoBtn = paginationContainer.querySelector('.goto-page-btn');
+    const gotoInput = paginationContainer.querySelector('.goto-page-input');
+    
+    gotoBtn.addEventListener('click', () => {
+        const page = parseInt(gotoInput.value);
+        if (!isNaN(page) && page >= 1 && page <= totalPages) {
+            currentPage = page;
+            displayReleases();
+            window.scrollTo(0, 0);
+        } else {
+            alert(`Please enter a valid page number between 1 and ${totalPages}`);
+            gotoInput.value = currentPage;
+        }
+    });
+    
+    // Add event listener for Enter key in the input
+    gotoInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            gotoBtn.click();
+        }
+    });
 }
 
 // Change view mode (grid or list)
