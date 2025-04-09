@@ -1,0 +1,154 @@
+name: Update Releases Data
+
+on:
+  schedule:
+    # Run daily at midnight
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+jobs:
+  update-releases:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Fetch All PocketMine-MP Releases
+        id: fetch-releases
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = 'pmmp';
+            const repo = 'PocketMine-MP';
+            const perPage = 100;
+            const maxPages = 10; // Up to 1000 releases
+            
+            let allReleases = [];
+            let page = 1;
+            let hasMoreReleases = true;
+            
+            console.log('Starting to fetch PocketMine-MP releases...');
+            
+            while (hasMoreReleases && page <= maxPages) {
+              console.log(`Fetching page ${page}...`);
+              try {
+                const response = await github.rest.repos.listReleases({
+                  owner,
+                  repo,
+                  per_page: perPage,
+                  page: page
+                });
+                
+                const releases = response.data;
+                console.log(`Fetched ${releases.length} releases from page ${page}`);
+                
+                if (releases.length === 0) {
+                  hasMoreReleases = false;
+                } else {
+                  allReleases = allReleases.concat(releases);
+                  if (releases.length < perPage) {
+                    hasMoreReleases = false;
+                  }
+                }
+                
+                page++;
+                
+                // Add a small delay to avoid hitting rate limits
+                if (hasMoreReleases) {
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+              } catch (error) {
+                console.error(`Error fetching page ${page}:`, error);
+                hasMoreReleases = false;
+              }
+            }
+            
+            console.log(`Total releases fetched: ${allReleases.length}`);
+            
+            return allReleases;
+          result-encoding: json
+      
+      - name: Process Releases
+        id: process-releases
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Get releases from previous step
+            const allReleases = ${{ steps.fetch-releases.outputs.result }};
+            
+            console.log(`Processing ${allReleases.length} releases...`);
+            
+            // Process releases to add additional properties
+            const processedReleases = allReleases.map(release => {
+              // Extract Minecraft version from the release body
+              const mcVersionMatch = release.body.match(/For Minecraft: Bedrock Edition (\d+\.\d+\.\d+)/i);
+              if (mcVersionMatch && mcVersionMatch[1]) {
+                release.mcVersion = mcVersionMatch[1];
+              }
+              
+              // Determine release type based on tag
+              if (release.tag_name.includes('alpha')) {
+                release.releaseType = 'alpha';
+              } else if (release.tag_name.includes('beta')) {
+                release.releaseType = 'beta';
+              } else {
+                release.releaseType = 'stable';
+              }
+              
+              return release;
+            });
+            
+            // Create directory if it doesn't exist
+            const dataDir = path.join(process.env.GITHUB_WORKSPACE, 'data');
+            if (!fs.existsSync(dataDir)) {
+              fs.mkdirSync(dataDir, { recursive: true });
+            }
+            
+            // Save to file
+            const outputFile = path.join(dataDir, 'releases.json');
+            fs.writeFileSync(outputFile, JSON.stringify(processedReleases, null, 2));
+            
+            console.log(`Releases data saved to ${outputFile}`);
+            
+            // Create summary with stats
+            const mcVersions = new Set();
+            processedReleases.forEach(release => {
+              if (release.mcVersion) {
+                mcVersions.add(release.mcVersion);
+              }
+            });
+            
+            const stableReleases = processedReleases.filter(r => r.releaseType === 'stable').length;
+            const betaReleases = processedReleases.filter(r => r.releaseType === 'beta').length;
+            const alphaReleases = processedReleases.filter(r => r.releaseType === 'alpha').length;
+            
+            const summary = `
+            # PocketMine-MP Releases Summary
+            
+            **Total Releases:** ${processedReleases.length}
+            
+            ## Release Types
+            - Stable: ${stableReleases}
+            - Beta: ${betaReleases}
+            - Alpha: ${alphaReleases}
+            
+            ## Minecraft Versions
+            ${Array.from(mcVersions).sort().map(v => `- ${v}`).join('\n')}
+            
+            _Last updated: ${new Date().toISOString()}_
+            `;
+            
+            fs.writeFileSync(path.join(dataDir, 'summary.md'), summary);
+      
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/releases.json data/summary.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update releases data [skip ci]" && git push) 

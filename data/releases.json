@@ -1,0 +1,172 @@
+[
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/113848539",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.27.1",
+    "id": 113848539,
+    "tag_name": "5.27.1",
+    "name": "PocketMine-MP 5.27.1",
+    "body": "**For Minecraft: Bedrock Edition 1.21.70**\n\nThis is a security release. Updating is strongly recommended.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).\n\n⚠️ Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues/new/choose). **We can't fix bugs if you don't report them.**",
+    "created_at": "2023-04-06T03:55:47Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.27.1/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.70",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/113180153",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.27.0",
+    "id": 113180153,
+    "tag_name": "5.27.0",
+    "name": "PocketMine-MP 5.27.0",
+    "body": "**For Minecraft: Bedrock Edition 1.21.70**\n\nThis is a support release for Bedrock 1.21.70.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).\n\n⚠️ Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues/new/choose). **We can't fix bugs if you don't report them.**",
+    "created_at": "2023-03-27T15:50:34Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.27.0/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.70",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/112855271",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.26.0",
+    "id": 112855271,
+    "tag_name": "5.26.0",
+    "name": "PocketMine-MP 5.26.0",
+    "body": "**For Minecraft: Bedrock Edition 1.21.60**\n\nThis is a minor feature release focused on performance improvements.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).\n\n⚠️ Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues/new/choose). **We can't fix bugs if you don't report them.**",
+    "created_at": "2023-03-22T18:40:39Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.26.0/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.60",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/110765153",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.25.2",
+    "id": 110765153,
+    "tag_name": "5.25.2",
+    "name": "PocketMine-MP 5.25.2",
+    "body": "**For Minecraft: Bedrock Edition 1.21.60**\n\nThis is a security release. Users of prior versions are recommended to update as soon as possible.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).\n\n⚠️ Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues/new/choose). **We can't fix bugs if you don't report them.**",
+    "created_at": "2023-03-04T21:06:55Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.25.2/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.60",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/110209264",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.25.1",
+    "id": 110209264,
+    "tag_name": "5.25.1",
+    "name": "PocketMine-MP 5.25.1",
+    "body": "**For Minecraft: Bedrock Edition 1.21.60**\n\nThis is a bugfix release.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).\n\n⚠️ Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues/new/choose). **Remember, we can't fix bugs if we don't know they exist.**",
+    "created_at": "2023-02-26T17:17:32Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.25.1/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.60",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/109615376",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.25.0",
+    "id": 109615376,
+    "tag_name": "5.25.0",
+    "name": "PocketMine-MP 5.25.0",
+    "body": "**For Minecraft: Bedrock Edition 1.21.60**\n\nThis is a support release for Minecraft: Bedrock Edition 1.21.60. It also includes some minor API additions supporting new features in this version. \n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).",
+    "created_at": "2023-02-16T22:26:09Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.25.0/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.60",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/107853272",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.24.0",
+    "id": 107853272,
+    "tag_name": "5.24.0",
+    "name": "PocketMine-MP 5.24.0",
+    "body": "**For Minecraft: Bedrock Edition 1.21.50**\n\nThis is a minor feature release, including new gameplay features, performance improvements, and minor API additions.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).",
+    "created_at": "2023-01-22T20:52:06Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.24.0/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.50",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/107835324",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.23.3",
+    "id": 107835324,
+    "tag_name": "5.23.3",
+    "name": "PocketMine-MP 5.23.3",
+    "body": "**For Minecraft: Bedrock Edition 1.21.50**\n\nThis is a bugfix release.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.1.27-pm8).",
+    "created_at": "2023-01-22T00:11:09Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.23.3/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.21.50",
+    "releaseType": "stable"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/107835324",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/4.0.0-alpha1",
+    "id": 107835325,
+    "tag_name": "4.0.0-alpha1",
+    "name": "PocketMine-MP 4.0.0-alpha1",
+    "body": "**For Minecraft: Bedrock Edition 1.16.220**\n\nThis is an alpha release for testing purposes.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-8.0-pm1).",
+    "created_at": "2021-04-22T00:11:09Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/4.0.0-alpha1/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.16.220",
+    "releaseType": "alpha"
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/107835324",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/3.0.0-beta1",
+    "id": 107835326,
+    "tag_name": "3.0.0-beta1",
+    "name": "PocketMine-MP 3.0.0-beta1",
+    "body": "**For Minecraft: Bedrock Edition 1.2.0**\n\nThis is a beta release for testing purposes.\n\nPlease see the changelogs for details.\n\nℹ️ Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/php-7.2-pm1).",
+    "created_at": "2018-01-22T00:11:09Z",
+    "assets": [
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/3.0.0-beta1/PocketMine-MP.phar"
+      }
+    ],
+    "mcVersion": "1.2.0",
+    "releaseType": "beta"
+  }
+]
