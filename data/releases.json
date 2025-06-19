@@ -1,5 +1,44 @@
 [
   {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/226283319",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.30.0",
+    "id": 226283319,
+    "tag_name": "5.30.0",
+    "name": "PocketMine-MP 5.30.0",
+    "body": "**For Minecraft: Bedrock Edition 1.21.90**\r\n\r\nThis is a minor feature release containing API additions, internals cleanup and user experience improvements.\r\n\r\nPlease see the [changelogs](https://github.com/pmmp/PocketMine-MP/blob/5.30.0/changelogs/5.30.md#5300) for details.\r\n\r\n:information_source: Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/pm5-php-8.2-latest).\r\n\r\n:warning: Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues). **We can't fix bugs if you don't report them.**",
+    "created_at": "2025-06-18T20:48:30Z",
+    "assets": [
+      {
+        "name": "build_info.json",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.0/build_info.json"
+      },
+      {
+        "name": "core-permissions.rst",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.0/core-permissions.rst"
+      },
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.0/PocketMine-MP.phar"
+      },
+      {
+        "name": "start.cmd",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.0/start.cmd"
+      },
+      {
+        "name": "start.ps1",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.0/start.ps1"
+      },
+      {
+        "name": "start.sh",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.0/start.sh"
+      }
+    ],
+    "mcVersion": "1.21.90",
+    "releaseType": "stable",
+    "source_repo": "pmmp/PocketMine-MP",
+    "is_archived": false
+  },
+  {
     "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/226026863",
     "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.29.0",
     "id": 226026863,

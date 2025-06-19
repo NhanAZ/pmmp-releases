@@ -1,14 +1,14 @@
 
 # PocketMine-MP Releases Summary
 
-**Total Releases:** 434
+**Total Releases:** 435
 
 ## Sources
-- Current Repository (pmmp/PocketMine-MP): 404
+- Current Repository (pmmp/PocketMine-MP): 405
 - Archived Repository (PocketMine/PocketMine-MP): 30
 
 ## Release Types
-- Stable: 322
+- Stable: 323
 - Beta: 26
 - Alpha: 86
 
@@ -76,4 +76,4 @@
 - 1.8.0
 - 1.9.0
 
-_Last updated: 2025-06-18T02:09:00.807Z_
+_Last updated: 2025-06-19T02:09:43.986Z_
