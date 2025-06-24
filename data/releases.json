@@ -1,5 +1,44 @@
 [
   {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/227186292",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.30.1",
+    "id": 227186292,
+    "tag_name": "5.30.1",
+    "name": "PocketMine-MP 5.30.1",
+    "body": "**For Minecraft: Bedrock Edition 1.21.90**\r\n\r\nThis is a bugfix release.\r\n\r\nPlease see the [changelogs](https://github.com/pmmp/PocketMine-MP/blob/5.30.1/changelogs/5.30.md#5301) for details.\r\n\r\n:information_source: Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/pm5-php-8.2-latest).\r\n\r\n:warning: Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues). **We can't fix bugs if you don't report them.**",
+    "created_at": "2025-06-23T20:30:48Z",
+    "assets": [
+      {
+        "name": "build_info.json",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.1/build_info.json"
+      },
+      {
+        "name": "core-permissions.rst",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.1/core-permissions.rst"
+      },
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.1/PocketMine-MP.phar"
+      },
+      {
+        "name": "start.cmd",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.1/start.cmd"
+      },
+      {
+        "name": "start.ps1",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.1/start.ps1"
+      },
+      {
+        "name": "start.sh",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.30.1/start.sh"
+      }
+    ],
+    "mcVersion": "1.21.90",
+    "releaseType": "stable",
+    "source_repo": "pmmp/PocketMine-MP",
+    "is_archived": false
+  },
+  {
     "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/226283319",
     "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.30.0",
     "id": 226283319,
