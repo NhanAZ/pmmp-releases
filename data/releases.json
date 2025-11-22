@@ -1,5 +1,83 @@
 [
   {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/264470831",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.37.3",
+    "id": 264470831,
+    "tag_name": "5.37.3",
+    "name": "PocketMine-MP 5.37.3",
+    "body": "**For Minecraft: Bedrock Edition 1.21.124**\r\n\r\nThis release fixes the Docker image build.\r\nOtherwise, it is identical to 5.37.2.\r\n\r\nPlease see the [changelogs](https://github.com/pmmp/PocketMine-MP/blob/5.37.3/changelogs/5.37.md#5373) for details.\r\n\r\n:information_source: Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/pm5-php-8.2-latest).\r\n\r\n:warning: Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues). **We can't fix bugs if you don't report them.**",
+    "created_at": "2025-11-21T22:41:24Z",
+    "assets": [
+      {
+        "name": "build_info.json",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.3/build_info.json"
+      },
+      {
+        "name": "core-permissions.rst",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.3/core-permissions.rst"
+      },
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.3/PocketMine-MP.phar"
+      },
+      {
+        "name": "start.cmd",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.3/start.cmd"
+      },
+      {
+        "name": "start.ps1",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.3/start.ps1"
+      },
+      {
+        "name": "start.sh",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.3/start.sh"
+      }
+    ],
+    "mcVersion": "1.21.124",
+    "releaseType": "stable",
+    "source_repo": "pmmp/PocketMine-MP",
+    "is_archived": false
+  },
+  {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/264422972",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.37.2",
+    "id": 264422972,
+    "tag_name": "5.37.2",
+    "name": "PocketMine-MP 5.37.2",
+    "body": "**For Minecraft: Bedrock Edition 1.21.124**\r\n\r\nThis is a bugfix and protocol support release.\r\n\r\nWhile the headline version is .124, .120-.123 are still accepted since there are no protocol changes relevant to PM in these versions.\r\n\r\nPlease see the [changelogs](https://github.com/pmmp/PocketMine-MP/blob/5.37.2/changelogs/5.37.md#5372) for details.\r\n\r\n:information_source: Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/pm5-php-8.2-latest).\r\n\r\n:warning: Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues). **We can't fix bugs if you don't report them.**",
+    "created_at": "2025-11-21T18:48:54Z",
+    "assets": [
+      {
+        "name": "build_info.json",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.2/build_info.json"
+      },
+      {
+        "name": "core-permissions.rst",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.2/core-permissions.rst"
+      },
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.2/PocketMine-MP.phar"
+      },
+      {
+        "name": "start.cmd",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.2/start.cmd"
+      },
+      {
+        "name": "start.ps1",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.2/start.ps1"
+      },
+      {
+        "name": "start.sh",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.37.2/start.sh"
+      }
+    ],
+    "mcVersion": "1.21.124",
+    "releaseType": "stable",
+    "source_repo": "pmmp/PocketMine-MP",
+    "is_archived": false
+  },
+  {
     "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/260700467",
     "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.37.1",
     "id": 260700467,
