@@ -2,10 +2,6 @@
 
 A static website to explore and search through PocketMine-MP releases from the official GitHub repositories.
 
-## 🚧 DEVELOPMENT NOTICE
-
-This project is currently under development and has not been officially released. Features may be incomplete or subject to change.
-
 ## 🌟 Features
 
 - Browse all PocketMine-MP releases from both current and archived repositories
