@@ -25,8 +25,8 @@ This project is currently under development and has not been officially released
 
 ## 🔗 Links
 
-- [Live Website](https://nhanaz.github.io/pmmp-releases/)
-- [GitHub Repository](https://github.com/NhanAZ/pmmp-releases)
+- [Live Website](https://nhanaz-web.github.io/pmmp-releases/)
+- [GitHub Repository](https://nhanaz-web.github.io/pmmp-releases/)
 - [PocketMine-MP Project](https://github.com/pmmp/PocketMine-MP)
 - [Developer](https://github.com/NhanAZ)
 
