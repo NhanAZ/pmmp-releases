@@ -59,15 +59,6 @@
                             </select>
                         </div>
                         
-                        <div class="mb-3">
-                            <label for="sourceRepo" class="form-label">Repository Source:</label>
-                            <select class="form-select" id="sourceRepo">
-                                <option value="">All Sources</option>
-                                <option value="pmmp/PocketMine-MP">Current (pmmp)</option>
-                                <option value="PocketMine/PocketMine-MP">Archived (PocketMine)</option>
-                            </select>
-                        </div>
-                        
                         <button id="resetFilters" class="btn btn-secondary w-100">Reset Filters</button>
                     </div>
                 </div>
@@ -185,7 +176,6 @@
                     <span class="badge rounded-pill bg-version">v0.0.0</span>
                     <span class="badge rounded-pill bg-mc-version">MC 0.0.0</span>
                     <span class="badge rounded-pill bg-type">type</span>
-                    <span class="badge rounded-pill bg-repo">source</span>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title release-title">Release Title</h5>
@@ -204,8 +194,6 @@
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- GitHub API Wrapper (Octokit) -->
-    <script src="https://cdn.jsdelivr.net/npm/@octokit/rest@19.0.5/dist/octokit-rest.min.js"></script>
     <!-- Marked for Markdown parsing -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <!-- Custom JS -->
