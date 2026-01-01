@@ -7,6 +7,11 @@ on:
   workflow_dispatch:
     # Allow manual trigger
 
+# Prevent concurrent runs of this workflow
+concurrency:
+  group: update-releases
+  cancel-in-progress: false
+
 jobs:
   update-releases:
     runs-on: ubuntu-latest
@@ -213,5 +218,9 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git pull --rebase origin master
           git add data/releases.json data/summary.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update releases data [skip ci]" && git push) 
+          if ! git diff --quiet --staged; then
+            git commit -m "Update releases data"
+            git push
+          fi 
