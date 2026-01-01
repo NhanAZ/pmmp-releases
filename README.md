@@ -1,43 +1,24 @@
-# PocketMine-MP Releases Explorer
+# PocketMine-MP Releases
 
-A static website to explore and search through PocketMine-MP releases from the official GitHub repositories.
+Static website to browse and search PocketMine-MP releases from GitHub repositories.
 
-## 🌟 Features
+## Features
 
-- Browse all PocketMine-MP releases from both current and archived repositories
-- Filter releases by Minecraft version, release type, and repository source
-- Search for specific releases by title, content, or version number
-- View detailed information about each release
-- Responsive design for desktop and mobile devices
-- Direct download links to PocketMine-MP.phar files
-- Advanced pagination with "Go to page" functionality
+- Browse releases from current and archived repositories
+- Filter by Minecraft version and release type
+- Search by version, title, or changelog content
+- Direct download links to `.phar` files
+- Responsive design
 
-## 🔧 Technologies Used
+## How It Works
 
-- HTML5, CSS3, JavaScript
-- Bootstrap 5
-- Font Awesome
-- Marked.js for Markdown parsing
+GitHub Actions automatically fetches release data daily and updates the site. Data is stored in JSON format and rendered client-side.
 
-## 🔗 Links
+## Links
 
-- [Live Website](https://nhanaz-web.github.io/pmmp-releases/)
-- [GitHub Repository](https://nhanaz-web.github.io/pmmp-releases/)
-- [PocketMine-MP Project](https://github.com/pmmp/PocketMine-MP)
-- [Developer](https://github.com/NhanAZ)
+- **Website**: [nhanaz-web.github.io/pmmp-releases](https://nhanaz-web.github.io/pmmp-releases/)
+- **PocketMine-MP**: [github.com/pmmp/PocketMine-MP](https://github.com/pmmp/PocketMine-MP)
 
-## 🌏 Contribution
+## License
 
-A small contribution from Vietnam 🇻🇳 to make PocketMine-MP changelogs more accessible.
-
-## ⚙️ How It Works
-
-This website uses GitHub Actions to periodically fetch releases data from the PocketMine-MP repositories and stores it in a JSON file. The frontend then loads this data and renders it using JavaScript.
-
-## 🤖 Acknowledgements
-
-Powered by AI tools, including Claude by Anthropic.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - see LICENSE file for details.
