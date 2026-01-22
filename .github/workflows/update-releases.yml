@@ -169,30 +169,46 @@ jobs:
               console.log(`...and ${processedReleases.length - 5} more.`);
             }
             
-            // Save to file
+            // Check if data has actually changed
             const outputFile = path.join(dataDir, 'releases.json');
-            fs.writeFileSync(outputFile, JSON.stringify(processedReleases, null, 2));
+            let hasChanges = true;
             
-            console.log(`Releases data saved to ${outputFile} - contains ${processedReleases.length} releases`);
-            
-            // Create summary with stats
-            const mcVersions = new Set();
-            processedReleases.forEach(release => {
-              if (release.mcVersion) {
-                mcVersions.add(release.mcVersion);
+            if (fs.existsSync(outputFile)) {
+              try {
+                const existingData = JSON.parse(fs.readFileSync(outputFile, 'utf8'));
+                // Compare by stringifying both (ignoring order differences)
+                const newDataStr = JSON.stringify(processedReleases);
+                const existingDataStr = JSON.stringify(existingData);
+                hasChanges = newDataStr !== existingDataStr;
+              } catch (error) {
+                console.log('Could not read existing file, will create new one');
+                hasChanges = true;
               }
-            });
+            }
             
-            // Count by repository
-            const pmmpReleases = processedReleases.filter(r => r.source_repo === 'pmmp/PocketMine-MP').length;
-            const oldReleases = processedReleases.filter(r => r.source_repo === 'PocketMine/PocketMine-MP').length;
-            
-            // Count by type
-            const stableReleases = processedReleases.filter(r => r.releaseType === 'stable').length;
-            const betaReleases = processedReleases.filter(r => r.releaseType === 'beta').length;
-            const alphaReleases = processedReleases.filter(r => r.releaseType === 'alpha').length;
-            
-            const summary = `
+            if (hasChanges) {
+              // Save to file only if changed
+              fs.writeFileSync(outputFile, JSON.stringify(processedReleases, null, 2));
+              console.log(`Releases data saved to ${outputFile} - contains ${processedReleases.length} releases`);
+              
+              // Create summary with stats
+              const mcVersions = new Set();
+              processedReleases.forEach(release => {
+                if (release.mcVersion) {
+                  mcVersions.add(release.mcVersion);
+                }
+              });
+              
+              // Count by repository
+              const pmmpReleases = processedReleases.filter(r => r.source_repo === 'pmmp/PocketMine-MP').length;
+              const oldReleases = processedReleases.filter(r => r.source_repo === 'PocketMine/PocketMine-MP').length;
+              
+              // Count by type
+              const stableReleases = processedReleases.filter(r => r.releaseType === 'stable').length;
+              const betaReleases = processedReleases.filter(r => r.releaseType === 'beta').length;
+              const alphaReleases = processedReleases.filter(r => r.releaseType === 'alpha').length;
+              
+              const summary = `
             # PocketMine-MP Releases Summary
             
             **Total Releases:** ${processedReleases.length}
@@ -208,11 +224,12 @@ jobs:
             
             ## Minecraft Versions
             ${Array.from(mcVersions).sort().map(v => `- ${v}`).join('\n')}
-            
-            _Last updated: ${new Date().toISOString()}_
             `;
-            
-            fs.writeFileSync(path.join(dataDir, 'summary.md'), summary);
+              
+              fs.writeFileSync(path.join(dataDir, 'summary.md'), summary);
+            } else {
+              console.log('No changes detected in releases data, skipping file update');
+            }
       
       - name: Commit and push if changed
         run: |
