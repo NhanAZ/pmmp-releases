@@ -1,5 +1,44 @@
 [
   {
+    "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/301471026",
+    "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.42.0",
+    "id": 301471026,
+    "tag_name": "5.42.0",
+    "name": "PocketMine-MP 5.42.0",
+    "body": "**For Minecraft: Bedrock Edition 1.26.10 (display version v26.10)**\r\n\r\nThis is a support release for Minecraft: Bedrock Edition 1.26.10 (display version v26.0).\r\n\r\nPlease see the [changelogs](https://github.com/pmmp/PocketMine-MP/blob/5.42.0/changelogs/5.42.md#5420) for details.\r\n\r\n**If you're upgrading from 5.40.x directly to 5.42.0, please also read the following changelogs, as the interim releases contain important changes:**\r\n- [5.41.0](https://github.com/pmmp/PocketMine-MP/blob/5.41.0/changelogs/5.41.md) - new gameplay and API features, performance improvements and network security improvements\r\n\r\n:information_source: Download the recommended PHP binary [here](https://github.com/pmmp/PHP-Binaries/releases/tag/pm5-php-8.2-latest).\r\n\r\n:warning: Found a bug? Report it on our [issue tracker](https://github.com/pmmp/PocketMine-MP/issues). **We can't fix bugs if you don't report them.**",
+    "created_at": "2026-03-25T22:18:23Z",
+    "assets": [
+      {
+        "name": "build_info.json",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.42.0/build_info.json"
+      },
+      {
+        "name": "core-permissions.rst",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.42.0/core-permissions.rst"
+      },
+      {
+        "name": "PocketMine-MP.phar",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.42.0/PocketMine-MP.phar"
+      },
+      {
+        "name": "start.cmd",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.42.0/start.cmd"
+      },
+      {
+        "name": "start.ps1",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.42.0/start.ps1"
+      },
+      {
+        "name": "start.sh",
+        "browser_download_url": "https://github.com/pmmp/PocketMine-MP/releases/download/5.42.0/start.sh"
+      }
+    ],
+    "mcVersion": "1.26.10",
+    "releaseType": "stable",
+    "source_repo": "pmmp/PocketMine-MP",
+    "is_archived": false
+  },
+  {
     "url": "https://api.github.com/repos/pmmp/PocketMine-MP/releases/299202478",
     "html_url": "https://github.com/pmmp/PocketMine-MP/releases/tag/5.41.1",
     "id": 299202478,
